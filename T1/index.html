@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html>
+<style>
+	:root {
+		--primary-color: #e50914;
+	}
+
+	* {
+		box-sizing: border-box;
+		margin: 0;
+		padding: 0;
+	}
+
+	body {
+		font-family: 'Arial';
+		background: #000;
+		text-align: center;
+	}
+
+
+
+	
+
+	h1,
+	h2,
+	h3,
+	h4 {
+		color: #fff;
+	}
+
+	a {
+		color: #fff;
+	}
+
+	p {
+		margin: 0.5rem 0;
+	}
+
+
+	.propaganda {
+		margin-top: 10vh;
+		position: relative;
+		width: 50%;
+		left: 25%;
+	}
+
+	ul {
+		list-style-type: none;
+		margin: 0;
+		padding: 0;
+		overflow: hidden;
+	}
+
+	li {
+		float: left;
+	}
+
+	li a {
+		display: block;
+		color: white;
+		text-align: center;
+		padding: 14px 16px;
+		text-decoration: none;
+	}
+
+	li a:hover {
+		background-color: var(--primary-color);
+	}
+
+	li img {
+		float: left;
+		width: 5%;
+	}
+
+
+
+
+	.btn {
+		background: var(--primary-color);
+		text-align: center;
+		border-radius: 2px;
+	}
+
+	.btn:hover {
+		opacity: 0.9;
+	}
+
+
+
+	.btn-cadastro {
+		font-size: 1rem;
+		padding: 0.8rem 1.3rem;
+		text-transform: uppercase;
+	}
+
+	.search-box {
+		position: center;
+		transform: translate(-50, -50);
+		height: 60px;
+	}
+
+	input {
+		height: 49px;
+		width: 550px;
+		border-radius: 5px;
+		padding: 0px 10px;
+	}
+
+	.novidades {
+		border-top: 8px solid #222;
+		font-size: 30px;
+		text-align: left;
+		position: relative;
+		padding: 150px 10%;
+		color: #fff;
+		display: block;
+		border-bottom: 8px solid #222;
+	}
+
+	.novidades iframe {
+		width: 600px;
+		height: 300px;
+		position: absolute;
+		left: 50%;
+		top: 20%;
+	}
+
+	.baixar {
+		font-size: 30px;
+		text-align: justify;
+		position: relative;
+		padding: 150px 10%;
+		margin-bottom: 0;
+		background: 0 0;
+		color: #fff;
+		display: block;
+		border-bottom: 8px solid #222;
+	}
+
+	.baixar img {
+		width: 600px;
+		height: 300px;
+		position: absolute;
+		top: 20%;
+		left: 50%;
+	}
+
+
+
+	.duvidas {
+		padding-top: 60px;
+		padding-bottom: 50px;
+	}
+
+	.duvidas h1 {
+		font-size: 50px;
+		padding-bottom: 50px;
+	}
+
+	.duvidas button {
+		display: center;
+		text-align: left;
+		background-color: #303030;
+		color: white;
+		height: 65px;
+		width: 700px;
+		padding: 0.3rem 0.5rem;
+		text-transform: uppercase;
+		border-radius: 2px;
+	}
+
+	.page-down {
+		border-top: 8px solid #222;
+		background-color: transparent;
+		color: #fff;
+		margin-bottom: 1.5rem;
+		display: grid;
+		grid-template-columns: repeat(5, 1fr);
+		grid-gap: 0.5rem;
+	}
+</style>
+
+<head>
+	<title>Netflix</title>
+	<meta charset="utf-8">
+	<!-- Icones -->
+	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
+</head>
+
+<body>
+	<!--navBar usando linha-->
+	<ul>
+		<li><img
+				src="https://upload.wikimedia.org/wikipedia/commons/thumb/7/75/Netflix_icon.svg/1200px-Netflix_icon.svg.png">
+		</li>
+		<li style="float:right"><a class="active" href="#cadastro">Logar<i style="margin-left: 50px;"
+					class="fa fa-sign-in"></i></a></li>
+	</ul>
+	<div>
+
+
+
+
+	</div>
+
+	<div class="propaganda">
+		<h1>Veja filmes sem parar e da forma que quiser</h1>
+		<br><br>
+		<div class="search-box">
+			<input class="search-txt" type="text" name="box" placeholder="Email address."><a href="#"
+				class="btn  btn-cadastro">Cadastrar <i style="margin-left: 5px;" class="fa fa-envelope btn-icon"></i>
+			</a>
+		</div>
+
+
+		<div>
+			<h3>Pronto parar acessar o conteúdo? Coloque seu e-mail e teste a platafroma</h3>
+			<br><br>
+		</div>
+	</div>
+
+
+	<div class="novidades">
+		<h2> Acompanhe as novidades </h2>
+		<p>Todo mês novas atualizações<br>Novos filmes, series, documentarios<br>Fique por dentro!</p>
+		<iframe src="https://www.youtube.com/embed/ga1gcFApl-k?controls=0&showinfo=0&rel=0"
+			title="Novidades do Mês: Setembro | Netflix Brasil" frameborder="0"
+			allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture"
+			allowfullscreen></iframe>
+	</div>
+
+	<div class="baixar">
+		<h2>Baixe os melhores filmes<br>para assistir de onde estiver</h2>
+		<p>Save your favourites easily and<br>always have something to watch.</p>
+		<img src="https://tecnoblog.net/wp-content/uploads/thumbs/2017/04/212359-thumb-serp-1200x675.jpg">
+	</div>
+
+	<div class="duvidas">
+		<h1>Dúvidas frequentes..</h1>
+		<button>Como funciona o Netflix?</button><br><br>
+		<button>Serviço é pago?</button><br><br>
+		<button>O que eu  tenho acesso?</button><br><br>
+		<button>Como cancelar?</button><br><br>
+		<button>Percisa de internet?</button>
+	</div>
+
+
+
+	<footer class="page-down">
+		<p>Em caso de dúvidas acesse nossas redes sociais</p>
+		<p><a href="#">Instagram</a></p>
+		<p><a href="#">Facebook</a></p>
+		<p><a href="#">E-mail</a></p>
+	</footer>
+</body>
+
+</html>
