@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html dir="ltr" lang="en">
+    <head>
+        <meta charset="utf-8">
+    </head>
+    <body>
+    </body>
+    <script src="circle.js"></script>
+    <script> 
+        window.onload = function() {
+            
+            circles.init();
+        };
+        window.onkeydown = function (event) {
+                if ((event.ctrlKey && event.key === "Enter")||(event.ctrlKey && event.key === "Escape")) {
+                    document.getElementById("red-circle").style.display =
+                        "block";
+                    document.getElementById("yellow-circle").style.display =
+                        "block";
+                    document.getElementById("blue-circle").style.display =
+                        "block";
+                }
+            };
+    </script>
+</html>
