@@ -32,15 +32,19 @@ var circles = {
 
         
         
-        this.createCircle("red-circle")
-        this.createCircle("blue-circle")
-        this.createCircle("yellow-circle")
+        this.initGame()
 
 
         this.reloadButton()
         this.addRedButton()
         this.addYellowButton()
         this.addBlueButton()
+    },
+    initGame(){
+
+        this.createCircle("red-circle")
+        this.createCircle("blue-circle")
+        this.createCircle("yellow-circle")
     },
 
     inportStyles(){
@@ -77,8 +81,9 @@ var circles = {
         circle.id=(id)
         circle.className="circle"
         circle.onclick = function(){
-            circle.style.display = "none";
+            self.father.removeChild(circle)
             self.recalculate()
+
         }
         this.father.appendChild(circle)
     },
@@ -93,12 +98,10 @@ var circles = {
         button.innerText="Recarregar Inicio"
         var self =this
         button.onclick = function(){
-            document.getElementById("red-circle").style.display =
-                        "block";
-                    document.getElementById("yellow-circle").style.display =
-                        "block";
-                    document.getElementById("blue-circle").style.display =
-                        "block";
+            self.father.querySelectorAll(".circle").forEach(e=>{
+                self.father.removeChild(e)
+            })
+            self.initGame()
             self.recalculate()
         }
         var buttonClass = `.reloadButton {
@@ -119,6 +122,8 @@ var circles = {
         button.setAttribute("style", "background-color: #4CAF50;" )
         
         div.appendChild(button)
+        
+        
     },
     addRedButton: function() {
         var div = document.getElementById("botoes")
@@ -131,13 +136,7 @@ var circles = {
         var self = this;
         button.onclick = function(){
             self.createCircle("red-circle")
-            var vermelhos=0
-            document.querySelectorAll("#red-circle").forEach(c=>{
-                if(c.style.display != "none"){
-                    vermelhos++
-                }
-
-            })
+            var vermelhos= document.querySelectorAll("#red-circle").length
             button.innerText="Add Vermelhos: " + vermelhos
         }
         button.setAttribute("style", "background-color: red;" )
@@ -154,13 +153,7 @@ var circles = {
         var self = this;
         button.onclick = function(){
             self.createCircle("yellow-circle")
-            var amarelos=0
-            document.querySelectorAll("#yellow-circle").forEach(c=>{
-                if(c.style.display != "none"){
-                    amarelos++
-                }
-
-            })
+            var amarelos= document.querySelectorAll("#yellow-circle").length
             button.innerText="Add Amarelos: " + amarelos
         }
         button.setAttribute("style", "background-color: #EACF07;" )
@@ -177,40 +170,16 @@ var circles = {
         var self = this;
         button.onclick = function(){
             self.createCircle("blue-circle")
-            var azuis=0
-            document.querySelectorAll("#blue-circle").forEach(c=>{
-                if(c.style.display != "none"){
-                    azuis++
-                }
-
-            })
+            var azuis= document.querySelectorAll("#blue-circle").length
             button.innerText="Add Azuis: " + azuis
         }
         button.setAttribute("style", "background-color: blue;" )
         div.appendChild(button)
     },
     recalculate:function(){
-        var vermelhos=0
-        document.querySelectorAll("#red-circle").forEach(c=>{
-            if(c.style.display != "none"){
-                vermelhos++
-            }
-
-        })
-        var amarelos=0
-            document.querySelectorAll("#yellow-circle").forEach(c=>{
-                if(c.style.display != "none"){
-                    amarelos++
-                }
-
-            })
-        var azuis=0
-        document.querySelectorAll("#blue-circle").forEach(c=>{
-            if(c.style.display != "none"){
-                azuis++
-            }
-
-        })
+        var vermelhos= document.querySelectorAll("#red-circle").length
+        var amarelos= document.querySelectorAll("#yellow-circle").length
+        var azuis= document.querySelectorAll("#blue-circle").length
         document.getElementById("redButton").innerText="Add Vermelhos: " + vermelhos
         document.getElementById("blueButton").innerText="Add Azuis: " + azuis
         document.getElementById("yellowButton").innerText="Add Amarelos: " + amarelos
