@@ -1,0 +1,4 @@
+reversi-js
+==========
+
+jogo reversi
