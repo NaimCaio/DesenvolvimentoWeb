@@ -16,6 +16,7 @@ var reversi = {
     bestMoove:null,
     turn: null,
     enableHelp:null,
+    //twoPlayers:true,
     
     init: function(selector) {
         //player é peça preta de inicio
@@ -78,8 +79,9 @@ var reversi = {
         this.score.white.elem.style.textDecoration = isBlack ? '': 'underline';
     },
 
-    botPlays:function(){
-        
+    botPlays:async function(){
+        //Sleep para o bot não jogar rápido demais
+        await new Promise(r => setTimeout(r, 2000));
         this.bestMoove= []
         //Find the best moove
         var maxPoints= this.bestMooveMaxMax();
