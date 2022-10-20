@@ -1,8 +1,9 @@
 var reversi = {
-    
     father: null,
     score: null,
     buttons:null,
+    vencedor:null,
+    jogadores:null,
     rows: 8,
     cols: 8,
     grid: [],
@@ -42,7 +43,13 @@ var reversi = {
     },
     
     initGame: function() {
+
+        this.bestMoove=null
+        this.vencedor.campo.elem.style.visibility =   'hidden' ;
+        this.vencedor.campo.elem.innerHTML = "";
         this.buttons.changeColor.elem.innerHTML = this.playerColor==this.states.black.id? "Jogar de Brancas":"Jogar de Pretas";
+        this.jogadores.j1.elem.innerHTML = this.playerColor==this.states.black.id? 'Jogador':"PC"
+        this.jogadores.j2.elem.innerHTML = this.playerColor==this.states.black.id? 'PC':"Jogador"
         // Pretas começam
         this.setTurn(this.states.black);
 
@@ -67,6 +74,9 @@ var reversi = {
         var turn = (this.turn.id === this.states.black.id) ? this.states.white : this.states.black;
         
         this.setTurn(turn);
+        if(this.turn.id!=this.playerColor){
+            this.botPlays()
+        }
     },
     
     setTurn: function(state) {
@@ -78,18 +88,37 @@ var reversi = {
         this.score.black.elem.style.textDecoration = isBlack ? 'underline': '';
         this.score.white.elem.style.textDecoration = isBlack ? '': 'underline';
     },
+    sleep :function (ms) {
+        return new Promise(resolve => setTimeout(resolve, ms));
+      },
 
-    botPlays:async function(){
-        //Sleep para o bot não jogar rápido demais
-        await new Promise(r => setTimeout(r, 2000));
+    botPlays:  function(){
         this.bestMoove= []
-        //Find the best moove
-        var maxPoints= this.bestMooveMaxMax();
-        if (maxPoints>0){
-            // this.grid[this.bestMoove[0]][this.bestMoove[1]].elem.style.visibility =   'visible' ;
-            // this.grid[this.bestMoove[0]][this.bestMoove[1]].elem.style.backgroundColor = "blue";
-            this.move(this.bestMoove[0],this.bestMoove[1])
+            
+        if (this.bestMooveMaxMax()){
+            this.sleep(2000).then(() => {
+                
+                this.move(this.bestMoove[0],this.bestMoove[1])
+                
+                if ( ! this.canMove()) {
+                                
+                    this.passTurn();
+                    
+                    
+                    if ( ! this.canMove()) {
+        
+                        this.endGame();
+                    }
+                }
+        
+                // in case of full grid, end the game
+                if (self.checkEnd()) {
+        
+                    self.endGame();
+                }
+                });
         }
+       
         
     },
     bestMooveMaxMax:function(){
@@ -107,7 +136,12 @@ var reversi = {
                 }
             }
         }
-        return maxPoints
+        if(maxPoints>0){
+            return true
+        }else{
+            this.bestMoove=null
+            return false
+        }
     },
 
     
@@ -126,7 +160,6 @@ var reversi = {
     },
     
     isVisibleItem: function(row, col) {
-        
         return this.isVisible(this.grid[row][col].state);
     },
     
@@ -145,7 +178,7 @@ var reversi = {
         this.grid[row][col].state = state;
         this.grid[row][col].elem.style.visibility =  this.isVisible(state) ? 'visible' : 'hidden';
         this.grid[row][col].elem.style.backgroundColor = state.color;
-        
+             
     },
     
     prepareGrid: function() {
@@ -179,6 +212,33 @@ var reversi = {
                 this.grid[i][j] = this.initItemState(td.appendChild(document.createElement('span')));
             }
         }
+        // barra de jogadores
+        var jogadores = document.createElement('div'),
+            j1 = document.createElement('span'),
+            j2 = document.createElement('span');
+            
+        j1.className = 'score-node score-black';
+        j2.className = 'score-node score-white';
+        
+        
+        jogadores.appendChild(j1);
+        jogadores.appendChild(j2);
+        
+        
+        this.father.appendChild(jogadores);
+        
+        
+        this.jogadores = {
+            'j1': { 
+                'elem': j1,
+                'state': 0
+            },
+            'j2': { 
+                'elem': j2,
+                'state': 0
+            },
+        }
+        
 
         // barra de score
         var scoreBar = document.createElement('div'),
@@ -208,8 +268,8 @@ var reversi = {
         }
         
         
-        this.father.appendChild(table);
-
+        
+        this.father.appendChild(table)
         //Botoes para trocar de cor
         var buttons= document.createElement('div'),
             changeColor= document.createElement('span'),
@@ -235,6 +295,20 @@ var reversi = {
 
         this.father.appendChild(buttons)
 
+        var vencedor= document.createElement('div'),
+            t= document.createElement('span')
+        t.className="score-node change-color"
+        vencedor.appendChild(t)
+        this.vencedor = {
+            'campo': { 
+                'elem': t,
+                'state': 0
+            },
+        }
+        this.father.appendChild(vencedor)
+        this.vencedor.campo.elem.style.visibility =   'hidden' ;
+
+
 
 
     },
@@ -247,7 +321,6 @@ var reversi = {
         for (var i = 1; i <= this.rows; i++) {
 
             for (var j = 1; j <= this.cols; j++) {
-                
                 if (this.isValidPosition(i, j) && this.isVisibleItem(i, j)) {
                     
                     if (this.grid[i][j].state.id === this.states.black.id) {
@@ -260,7 +333,6 @@ var reversi = {
                 }
             }
         }
-
         //Retira recomendação de movimento se não for escolhido
         if (this.bestMoove!=null&&!this.isVisibleItem(this.bestMoove[0], this.bestMoove[1])){
             this.grid[this.bestMoove[0]][this.bestMoove[1]].elem.style.visibility =   'hidden' ;
@@ -359,12 +431,10 @@ var reversi = {
         var self = this;
         
         elem.onclick = function(event) {
-            
             if (self.canMove()) {
                 
                 // if have a valid move
                 if (self.isValidMove(row, col)) {
-
                     // make the move
                     self.move(row, col);
                     
@@ -417,15 +487,15 @@ var reversi = {
         
         switch (result) {
             
-            case 1:  { message = 'Pretas ganharam'; } break;
-            case -1: { message = 'Brancas ganharam'; } break;
+            case 1:  { message = 'Pretas ganharam ' +this.score.black.state ; } break;
+            case -1: { message = 'Brancas ganharam '+this.score.white.state ; } break;
             case 0:  { message = 'Emmpate'; } break;
         }
+        this.vencedor.campo.elem.innerHTML = message;
+        this.vencedor.campo.elem.style.visibility =   'visible' ;
         
-        alert(message);
         
-        // recomeça
-        this.reset();
+        
     },
     
     clear: function() {
