@@ -4,13 +4,14 @@ var reversi = {
     buttons:null,
     vencedor:null,
     jogadores:null,
+    nome:null,
     rows: 8,
     cols: 8,
     grid: [],
     states: {
-        'blank': { 'id' : 0, 'color': 'white' },
-        'white': { 'id' : 1, 'color': 'white' },
-        'black': { 'id' : 2, 'color': 'black' }
+        'blank': { 'id' : 0, 'color': 'white'},
+        'white': { 'id' : 1, 'color': 'white'},
+        'black': { 'id' : 2, 'color': 'black'}
     },
     playerColor:null,
     lastMoove:[],
@@ -38,18 +39,23 @@ var reversi = {
         // cria tabela
         this.prepareGrid();
         
+        this.nome = prompt("Qual o seu nome de jogador?", "Jogador");
+        if (this.nome == null || this.nome == "") {
+            this.nome = 'Jogador';
+        }
+
         // inicia jogo 
         this.initGame();
     },
     
     initGame: function() {
 
-        this.bestMoove=null
+        this.bestMoove=null;
         this.vencedor.campo.elem.style.visibility =   'hidden' ;
         this.vencedor.campo.elem.innerHTML = "";
         this.buttons.changeColor.elem.innerHTML = this.playerColor==this.states.black.id? "Jogar de Brancas":"Jogar de Pretas";
-        this.jogadores.j1.elem.innerHTML = this.playerColor==this.states.black.id? 'Jogador':"PC"
-        this.jogadores.j2.elem.innerHTML = this.playerColor==this.states.black.id? 'PC':"Jogador"
+        this.jogadores.j1.elem.innerHTML = this.playerColor==this.states.black.id? this.nome : 'PC'
+        this.jogadores.j2.elem.innerHTML = this.playerColor==this.states.black.id? 'PC': this.nome
         // Pretas começam
         this.setTurn(this.states.black);
 
@@ -77,6 +83,14 @@ var reversi = {
         if(this.turn.id!=this.playerColor){
             this.botPlays()
         }
+        else{
+            this.getItensToChange().forEach(element => {
+                element.style.visibility = 'visible';
+                element.style.backgroundColor = 'brown';
+                
+            });
+        }
+       
     },
     
     setTurn: function(state) {
@@ -178,6 +192,10 @@ var reversi = {
         this.grid[row][col].state = state;
         this.grid[row][col].elem.style.visibility =  this.isVisible(state) ? 'visible' : 'hidden';
         this.grid[row][col].elem.style.backgroundColor = state.color;
+        //Animação troca de cor
+        this.grid[row][col].elem.style.WebkitTransitionDuration='1s';
+        
+        
              
     },
     
@@ -210,8 +228,14 @@ var reversi = {
                 
                 
                 this.grid[i][j] = this.initItemState(td.appendChild(document.createElement('span')));
+
+
             }
+
+
         }
+
+
         // barra de jogadores
         var jogadores = document.createElement('div'),
             j1 = document.createElement('span'),
@@ -428,14 +452,14 @@ var reversi = {
     
     bindMove: function(elem, row, col) {
         
-        var self = this;
-        
+        var self = this
+       
         elem.onclick = function(event) {
             if (self.canMove()) {
                 
-                // if have a valid move
+                // se tiver um movimento válido
                 if (self.isValidMove(row, col)) {
-                    // make the move
+                    // faz o movimento
                     self.move(row, col);
                     
                     // check whether the another player can now move, if not, pass turn back to other player
@@ -458,7 +482,9 @@ var reversi = {
                 }
             }
         };
+        
     },
+
     bindButtons: function(){
         self=this
         this.buttons.changeColor.elem.onclick= function(event){
@@ -609,6 +635,10 @@ var reversi = {
 
         //Peça colocada fica diferente para ajudar na visualização
         this.grid[row][col].elem.style.borderRadius = "10px";
+
+        //Animação rotação
+        this.grid[row][col].elem.style.WebkitTransitionDuration='1s';
+        this.grid[row][col].elem.style.webkitTransform = 'rotate(360deg)'
         this.lastMoove=[row,col]
         
         // passa turno para o outro
